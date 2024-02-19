@@ -6,13 +6,13 @@
 #    By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 12:32:15 by luiberna          #+#    #+#              #
-#    Updated: 2024/02/12 17:02:46 by luiberna         ###   ########.fr        #
+#    Updated: 2024/02/19 15:19:15 by luiberna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-SRCS = fdf.c init.c
+SRCS = fdf.c init.c verifiers.c free.c map.c
 
 CC = cc
 

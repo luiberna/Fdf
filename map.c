@@ -1,0 +1,63 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/19 13:17:57 by luiberna          #+#    #+#             */
+/*   Updated: 2024/02/19 16:52:08 by luiberna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fdf.h"
+
+void    get_max_min_z(t_fdf *fdf, int nb)
+{
+    if (!fdf->map->z_max || nb > fdf->map->z_max)
+        fdf->map->z_max = nb;
+    if (!fdf->map->z_min || nb < fdf->map->z_min)
+        fdf->map->z_min = nb;
+}
+
+int     *map_split(t_fdf *fdf, char *line)
+{
+    char    **split;
+    int     *line_values;
+    int     i;
+    int     size;
+    
+    size = 0;
+    i = 0;
+    split = ft_split(line, ' ');
+    while (split[size])
+        size++;
+    fdf->map->height = size;
+    line_values = malloc(sizeof(int) * size);
+    while (i < size)
+    {
+        line_values[i] = ft_atoi(split[i]);
+        get_max_min_z(fdf, line_values[i]);
+        free(split[i]);
+        i++;
+    }
+    free(split);
+    return(line_values);
+}
+
+void    map_load(t_fdf *fdf, int fd, int i)
+{
+    char    *line;
+    
+    line = get_next_line(fd);
+    fdf->map->width++;
+    if (line)
+        map_load(fdf, fd, i + 1);
+    else
+        fdf->map->map_info = malloc(sizeof(int *) * fdf->map->width);
+    if (line)
+        fdf->map->map_info[i] = map_split(fdf, line);
+    else
+        fdf->map->map_info[i] = (int *)line;
+    free(line);
+}

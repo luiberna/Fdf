@@ -6,13 +6,13 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:15:32 by luiberna          #+#    #+#             */
-/*   Updated: 2024/02/12 16:49:10 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:16:48 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_fdf *fdf_init(char *path)
+t_fdf   *fdf_init(char *path)
 {
     t_fdf *fdf;
     char *win_name;
@@ -31,5 +31,21 @@ static t_fdf *fdf_init(char *path)
     if (!fdf->img_ptr)
         return (write(2, "Error init image\n", 18), 0);
     fdf->data_addr = mlx_get_data_addr(fdf->img_ptr, &fdf->bpp, &fdf->line_lenght, &fdf->endian);
+    fdf->map = NULL;
     return (fdf);
+}
+
+t_map   *map_init(char *filename)
+{
+    t_map   *map;
+    
+    map = (t_map *)malloc(sizeof(t_map));
+    if(!map)
+        return (write(2, "Error init map\n", 16), 0);
+    map->height = 0;
+    map->width = 0;
+    map->z_max = 0;
+    map->z_min = 0;
+    map->map_name = filename;
+    return (map);
 }
