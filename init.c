@@ -6,11 +6,24 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:15:32 by luiberna          #+#    #+#             */
-/*   Updated: 2024/02/19 13:16:48 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/13 19:17:45 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void    init_vari(t_fdf *fdf)
+{
+    fdf->iso.angle_x = 0.523599; //30
+    fdf->iso.angle_y = 0.523599;
+    fdf->iso.alpha = 0;
+    fdf->iso.beta = 0;
+    fdf->iso.phi = 0;
+    fdf->camera.offset_x = 100;
+    fdf->camera.offset_y = 100;
+    fdf->camera.size_grid = 10;
+    fdf->camera.projection = 1;
+}
 
 t_fdf   *fdf_init(char *path)
 {
@@ -32,6 +45,8 @@ t_fdf   *fdf_init(char *path)
         return (write(2, "Error init image\n", 18), 0);
     fdf->data_addr = mlx_get_data_addr(fdf->img_ptr, &fdf->bpp, &fdf->line_lenght, &fdf->endian);
     fdf->map = NULL;
+    init_vari(fdf);
+    free(win_name);
     return (fdf);
 }
 
@@ -42,10 +57,6 @@ t_map   *map_init(char *filename)
     map = (t_map *)malloc(sizeof(t_map));
     if(!map)
         return (write(2, "Error init map\n", 16), 0);
-    map->height = 0;
-    map->width = 0;
-    map->z_max = 0;
-    map->z_min = 0;
     map->map_name = filename;
     return (map);
 }

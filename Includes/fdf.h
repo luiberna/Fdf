@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:47:04 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/11 14:18:57 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/13 19:07:49 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_camera
 	int			offset_y;
 	int			zoom;
 	float		size_grid;
+	int			projection;
 }					t_camera;
 
 typedef struct s_isometric
@@ -103,16 +104,24 @@ void	free_fdf(t_fdf *fdf);
 void    free_split(char **temp, int flag, t_fdf *fdf);
 
 //fdf
-void	map_drawing(t_fdf *fdf);
+void	make_fdf(t_fdf *fdf);
 
-//screen
-// void    screen_size(t_map_3d **map_3d, t_fdf *fdf);
+//draw
+void 	my_mlx_pixel_put(t_fdf **data, int x, int y, int color);
+void	treat_edge(t_fdf *fdf, t_map_3d a, t_map_3d b, float x);
+void	init_line(t_fdf *fdf, t_map_3d a, t_map_3d b, float x);
+void	draw_line(t_fdf *fdf, t_map_3d a, t_map_3d b);
+void 	draw_baby(t_fdf *fdf);
 
 //testing
-void    print_map_info(t_fdf *fdf);
+// void    print_map_info(t_fdf *fdf);
 void 	print_map_3d(t_fdf *fdf);
 
-//screen
+//projections
 void    isometric_projection(float *x, float *y, float *z, t_fdf *fdf);
+void    rotation_x(t_fdf *fdf, float *x, float *y, float *z);
+void    rotation_y(t_fdf *fdf, float *x, float *y, float *z);
+void    rotation_z(t_fdf *fdf, float *x, float *y, float *z);
+void	projections(float *x, float *y, float *z, t_fdf *fdf);
 
 #endif
