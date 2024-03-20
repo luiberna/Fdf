@@ -6,37 +6,38 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:04:00 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/13 19:20:52 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:39:56 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void my_mlx_pixel_put(t_fdf **data, int x, int y, int color)
+void my_mlx_pixel_put(t_fdf **fdf, int x, int y, int color)
 {
 	char *dst;
 
-	dst = (*data)->data_addr + (y * (*data)->line_lenght + x * ((*data)->bpp / 8));
+	dst = (*fdf)->data_addr + (y * (*fdf)->line_lenght + x * ((*fdf)->bpp / 8));
 	*(unsigned int*)dst = color;
 }
 
 void	treat_edge(t_fdf *fdf, t_map_3d a, t_map_3d b, float x)
 {
-	int y = a.y;
+	int y;
 
+	y= a.y;
 	while (fabs(b.y - y) > 0.5)
 	{
-		my_mlx_pixel_put(&fdf, x, y, 0x00FF0000);
-		y = y + ((b.y - a.y) / (fabs(b.y - a.y)));
+		if (x >= 0 && x <= MY_RES_X)
+			my_mlx_pixel_put(&fdf, x, y, 0x7FFFD4);
+		y += ((b.y - a.y) / (fabs(b.y - a.y)));
 	}
 	return ;
 }
 
 void	init_line(t_fdf *fdf, t_map_3d a, t_map_3d b, float x)
 {
-	
-	// if (fabs(b.x - a.x) <= 0.5 && fabs(b.y - a.y) > 0.5)
-	// 	treat_edge(fdf, a, b, x);
+	if (fabs(b.x - a.x) <= 0.5 && fabs(b.y - a.y) > 0.5)
+		treat_edge(fdf, a, b, x);
 	fdf->map->steep = (b.y - a.y) / (b.x - a.x);
 	fdf->map->direction = (b.x - a.x) / (fabs(b.x - a.x));
 }
@@ -48,21 +49,20 @@ void	draw_line(t_fdf *fdf, t_map_3d a, t_map_3d b)
 	
 	projections(&a.x, &a.y, &a.z, fdf);
 	projections(&b.x, &b.y, &b.z, fdf);
-	//printf("Drawing line from (%f, %f) to (%f, %f)\n", a.x, a.y, b.x, b.y);
 	x = a.x;
 	init_line(fdf, a, b, x);
 	while (fabs(b.x - x) > 0.5)
 	{
 		y = (fdf->map->steep) * (x - a.x) + a.y;
 		if (x >= 0 && x <= MY_RES_X)
-			my_mlx_pixel_put(&fdf, round(x), round(y), 0x00FF0000);
-		if ((fabs(y - (fdf->map->steep * ((x + fdf->map->direction) - a.x) + a.y))))
+			my_mlx_pixel_put(&fdf, round(x), round(y), 0x7FFFD4);
+		if ((fabs(y - (fdf->map->steep * ((x + fdf->map->direction) - a.x) + a.y))) > 1)
 		{
 			while ((int)(y - (fdf->map->steep * ((x + fdf->map->direction) - a.x) + a.y)))
 			{
 				y = y + ((b.y - a.y) / (fabs(b.y - a.y)));
 				if (x >= 0 && x <= MY_RES_X)
-					my_mlx_pixel_put(&fdf, x, y, 0x00FF0000);
+					my_mlx_pixel_put(&fdf, x, y, 0x7FFFD4);
 			}
 		}
 		x = x + fdf->map->direction;

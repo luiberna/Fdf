@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:47:04 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/13 19:07:49 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:08:07 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ typedef struct s_camera
 	int			offset_x;
 	int			offset_y;
 	int			zoom;
-	float		size_grid;
+	int			size_grid;
 	int			projection;
+	float		color_percent;
+	float		color_flag;
 }					t_camera;
 
 typedef struct s_isometric
@@ -63,7 +65,12 @@ typedef struct s_isometric
 	float		angle_y;
 	float		alpha;
 	float		beta;
+	float		delta;
+	float		gamma;
 	float		phi;
+	float		prev_y;
+	float		prev_x;
+	int			format_z;
 }					t_isometric;
 
 typedef struct s_fdf
@@ -75,6 +82,7 @@ typedef struct s_fdf
 	int			bpp;
 	int			endian;
 	int			line_lenght;
+	int			flag;
 	t_map		*map;
 	t_isometric iso;
 	t_camera	camera;
@@ -93,10 +101,13 @@ int     map_digit_veri(int fd, t_fdf *fdf);
 void	map_veri(t_fdf *fdf);
 
 //map
+void    regulate_z(t_fdf *fdf);
 void    get_max_min_z(t_fdf *fdf, int nb);
 int     *map_split(t_fdf *fdf, char *line);
 void    map_load(t_fdf *fdf, int fd, int i);
 void    fill_map_3d(t_fdf *fdf);
+
+//screen
 
 //free
 void	free_mlx(t_fdf *fdf);
@@ -115,13 +126,20 @@ void 	draw_baby(t_fdf *fdf);
 
 //testing
 // void    print_map_info(t_fdf *fdf);
-void 	print_map_3d(t_fdf *fdf);
+// void 	print_map_3d(t_fdf *fdf);
 
 //projections
 void    isometric_projection(float *x, float *y, float *z, t_fdf *fdf);
+void    parallel_projection(float *x, float *y, float *z, t_fdf *fdf);
+void    front_projection(float *x, float *y, float *z, t_fdf *fdf);
 void    rotation_x(t_fdf *fdf, float *x, float *y, float *z);
 void    rotation_y(t_fdf *fdf, float *x, float *y, float *z);
 void    rotation_z(t_fdf *fdf, float *x, float *y, float *z);
 void	projections(float *x, float *y, float *z, t_fdf *fdf);
+
+//color
+int	percent_to_color(float percent, int flag);
+int	make_color(float percent, int flag, int r, int g);
+int	create_trgb(int t, int r, int g, int b);
 
 #endif

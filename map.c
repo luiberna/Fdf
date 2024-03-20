@@ -6,30 +6,30 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 13:17:57 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/13 19:08:13 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/20 14:48:17 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // //(Test function) - Prints map_3d
-void print_map_3d(t_fdf *fdf)
-{
-    int i;
-    int j;
+// void print_map_3d(t_fdf *fdf)
+// {
+//     int i;
+//     int j;
 	
-	i = 0;
-    while (i < fdf->map->height)
-    {
-        j = 0;
-        while (j < fdf->map->width)
-        {
-            printf("x: %f, y: %f, z: %f\n", fdf->map->map_3d[i][j].x, fdf->map->map_3d[i][j].y, fdf->map->map_3d[i][j].z);
-            j++;
-        }
-        i++;
-    }
-}
+// 	i = 0;
+//     while (i < fdf->map->height)
+//     {
+//         j = 0;
+//         while (j < fdf->map->width)
+//         {
+//             printf("x: %f, y: %f, z: %f\n", fdf->map->map_3d[i][j].x, fdf->map->map_3d[i][j].y, fdf->map->map_3d[i][j].z);
+//             j++;
+//         }
+//         i++;
+//     }
+// }
 
 // (Test function) - Prints the map_info
 // void    print_map_info(t_fdf *fdf)
@@ -51,6 +51,14 @@ void print_map_3d(t_fdf *fdf)
 //     }
 // }
 
+void    regulate_z(t_fdf *fdf)
+{
+    if (fdf->map->z_max - fdf->map->z_min > 90)
+        fdf->iso.format_z = 9;
+    if (fdf->map->z_max - fdf->map->z_min > 900)
+        fdf->iso.format_z = 90;
+}
+
 void    get_max_min_z(t_fdf *fdf, int nb)
 {
     if (!fdf->map->z_max || nb > fdf->map->z_max)
@@ -68,7 +76,6 @@ int     *map_split(t_fdf *fdf, char *line)
     
     size = 0;
     i = 0;
-    // ft_printf("line: %s\n", line);
     split = ft_split(line, ' ');
     while (split[size])
         size++;
