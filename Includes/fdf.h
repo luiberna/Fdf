@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:47:04 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/19 16:08:07 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:05:44 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,9 @@ void    fill_map_3d(t_fdf *fdf);
 //screen
 
 //free
+void	clean_image(t_fdf *fdf);
 void	free_mlx(t_fdf *fdf);
-void	free_fdf(t_fdf *fdf);
+int		free_fdf(t_fdf *fdf);
 void    free_split(char **temp, int flag, t_fdf *fdf);
 
 //fdf
@@ -138,8 +139,14 @@ void    rotation_z(t_fdf *fdf, float *x, float *y, float *z);
 void	projections(float *x, float *y, float *z, t_fdf *fdf);
 
 //color
-int	percent_to_color(float percent, int flag);
-int	make_color(float percent, int flag, int r, int g);
-int	create_trgb(int t, int r, int g, int b);
+int		percent_to_color(float percent, int flag);
+int		make_color(float percent, int flag, int r, int g);
+int		create_trgb(int t, int r, int g, int b);
+
+//keys
+int 	handle_keys(int keysym, t_fdf *fdf);
+int     movement_keys(int keysym , t_fdf *fdf);
+int     rotation_keys(int keysym, t_fdf *fdf);
+int     camera_keys(int keysym, t_fdf *fdf);
 
 #endif

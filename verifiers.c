@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:42:42 by luiberna          #+#    #+#             */
-/*   Updated: 2024/02/19 16:48:55 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:08:54 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int     line_digit_veri(t_fdf *fdf, char *line)
         return (0);
     trim_line = ft_strtrim(line, " \n");
     temp = ft_split(trim_line, ' ');
+    free(trim_line);
     while (temp[line_size])
     {
         i = 0;

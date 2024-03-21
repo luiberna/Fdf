@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 13:17:57 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/20 14:48:17 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:16:06 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,9 @@ void    map_load(t_fdf *fdf, int fd, int i)
     char    *line;
     
     line = get_next_line(fd);
+    fdf->map->height++;
     if (line)
-    {
-        fdf->map->height++;
         map_load(fdf, fd, i + 1);
-    }
     else
         fdf->map->map_info = malloc(sizeof(int *) * fdf->map->height);
     if (line)
@@ -116,7 +114,7 @@ void    fill_map_3d(t_fdf *fdf)
     int j;
 
     i = 0;
-    fdf->map->map_3d = (t_map_3d **)malloc(sizeof(t_map_3d *) * fdf->map->height);
+    fdf->map->map_3d = (t_map_3d **)malloc(sizeof(t_map_3d *) * fdf->map->height--);
     while (i < fdf->map->height)
     {
         fdf->map->map_3d[i] = (t_map_3d *)malloc(sizeof(t_map_3d) * fdf->map->width);
