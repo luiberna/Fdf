@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:04:34 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/21 17:09:23 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/22 02:45:22 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ int     camera_keys(int keysym, t_fdf *fdf)
 		if (fdf->camera.size_grid < 1)
 			fdf->camera.size_grid = 1;
 	}
+	if (keysym == 8) //Color (C)
+	{
+		fdf->flag++;
+		if (fdf->flag == 8)
+			fdf->flag = 0;
+	}
     return(0);
 }
 
@@ -64,7 +70,8 @@ int     handle_keys(int keysym, t_fdf *fdf)
         movement_keys(keysym, fdf);
     if (keysym == 14 || keysym == 12 || keysym == 5 || keysym == 4)
         rotation_keys(keysym, fdf);
-    if (keysym == 24 || keysym == 27 || keysym == 37 || keysym == 125 || keysym == 126)
+    if (keysym == 24 || keysym == 27 || keysym == 37 || keysym == 125 \
+	|| keysym == 126 || keysym == 8)
         camera_keys(keysym, fdf);
     // printf("key: %d\n", keysym);
 	clean_image(fdf);

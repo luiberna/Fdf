@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:47:04 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/21 17:05:44 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/22 03:18:00 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,12 @@ typedef struct s_fdf
 	int			bpp;
 	int			endian;
 	int			line_lenght;
+	//
+	float		rgb_percent;
+	float		range_z;
+	int			new_max;
 	int			flag;
+	//
 	t_map		*map;
 	t_isometric iso;
 	t_camera	camera;
@@ -139,6 +144,7 @@ void    rotation_z(t_fdf *fdf, float *x, float *y, float *z);
 void	projections(float *x, float *y, float *z, t_fdf *fdf);
 
 //color
+int		world_color(float percent);
 int		percent_to_color(float percent, int flag);
 int		make_color(float percent, int flag, int r, int g);
 int		create_trgb(int t, int r, int g, int b);

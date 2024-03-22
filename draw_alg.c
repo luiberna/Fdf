@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:04:00 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/21 16:50:43 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:31:35 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ void	treat_edge(t_fdf *fdf, t_map_3d a, t_map_3d b, float x)
 	int		y;
 
 	y = a.y;
+	fdf->rgb_percent += fdf->range_z / (fdf->camera.size_grid);
 	while (fabs(b.y - y) > 0.5)
 	{
-		my_mlx_pixel_put(&fdf, x, y, 0x7FFFD4);
+		my_mlx_pixel_put(&fdf, x, y, percent_to_color(fdf->rgb_percent, fdf->flag));
 		y += ((b.y - a.y) / (fabs(b.y - a.y)));
 	}
 	return ;
@@ -39,6 +40,11 @@ void	treat_edge(t_fdf *fdf, t_map_3d a, t_map_3d b, float x)
 
 void	init_line(t_fdf *fdf, t_map_3d a, t_map_3d b, float x)
 {
+	fdf->rgb_percent = a.z / fdf->new_max;
+	if (b.z - a.z > 0)
+		fdf->range_z = (b.z / fdf->new_max - fdf->rgb_percent);
+	else
+		fdf->range_z = -(a.z / fdf->new_max - b.z / fdf->new_max);
 	if (fabs(b.x - a.x) <= 0.5 && fabs(b.y - a.y) > 0.5)
 		treat_edge(fdf, a, b, x);
 	fdf->map->steep = (b.y - a.y) / (b.x - a.x);
@@ -57,7 +63,8 @@ void	draw_line(t_fdf *fdf, t_map_3d a, t_map_3d b)
 	while (fabs(b.x - x) > 0.5)
 	{
 		y = (fdf->map->steep) * (x - a.x) + a.y;
-		my_mlx_pixel_put(&fdf, round(x), round(y), 0x7FFFD4);
+		fdf->rgb_percent += fdf->range_z / (fdf->camera.size_grid);
+		my_mlx_pixel_put(&fdf, round(x), round(y), percent_to_color(fdf->rgb_percent, fdf->flag));
 		if ((fabs(y - (fdf->map->steep * ((x + fdf->map->direction) \
 		- a.x) + a.y))) > 1)
 		{
@@ -65,7 +72,7 @@ void	draw_line(t_fdf *fdf, t_map_3d a, t_map_3d b)
 			- a.x) + a.y)))
 			{
 				y = y + ((b.y - a.y) / (fabs(b.y - a.y)));
-				my_mlx_pixel_put(&fdf, x, y, 0x7FFFD4);
+				my_mlx_pixel_put(&fdf, x, y, percent_to_color(fdf->rgb_percent, fdf->flag));
 			}
 		}
 		x = x + fdf->map->direction;

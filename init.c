@@ -6,7 +6,7 @@
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:15:32 by luiberna          #+#    #+#             */
-/*   Updated: 2024/03/21 15:03:57 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:18:26 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void    init_vari(t_fdf *fdf)
     fdf->camera.offset_y = 50;
     fdf->camera.size_grid = 10;
     fdf->camera.projection = 1;
-    fdf->flag = 0;
     fdf->iso.format_z = 15;
+    fdf->flag = 0;
 }
 
 t_fdf   *fdf_init(char *path)
